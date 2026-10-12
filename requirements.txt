@@ -1,0 +1,13 @@
+numpy
+matplotlib
+librosa
+soundfile
+torch
+torchaudio
+transformers
+datasets
+jiwer
+sounddevice
+scipy
+faster-whisper
+gTTS

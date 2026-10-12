@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="690" viewBox="0 0 1200 690" role="img" aria-labelledby="title desc">
+  <title id="title">ASR and TTS architecture for the stuttered-speech activity</title>
+  <desc id="desc">Mono audio is analyzed as waveform and log-Mel features, then transcribed through separate Wav2Vec2 CTC and Whisper encoder-decoder branches. A selected transcript is passed to text-to-speech to create audio.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
+    </marker>
+    <style>
+      .title { font: 700 27px Arial, sans-serif; fill: #0f172a; }
+      .label { font: 600 18px Arial, sans-serif; fill: #0f172a; }
+      .small { font: 14px Arial, sans-serif; fill: #334155; }
+      .edge { stroke: #334155; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
+      .box { stroke: #1e293b; stroke-width: 2; rx: 14; }
+    </style>
+  </defs>
+  <rect width="1200" height="690" fill="#f8fafc"/>
+  <text x="600" y="48" text-anchor="middle" class="title">From Voice to Text and Back: ASR / TTS Architecture</text>
+  <rect x="35" y="270" width="175" height="105" class="box" fill="#dbeafe"/>
+  <text x="122" y="307" text-anchor="middle" class="label">Stuttered speech</text>
+  <text x="122" y="334" text-anchor="middle" class="small">MP3 audio</text>
+  <text x="122" y="356" text-anchor="middle" class="small">mono, 16 kHz for ASR</text>
+  <rect x="265" y="270" width="190" height="105" class="box" fill="#e0f2fe"/>
+  <text x="360" y="307" text-anchor="middle" class="label">Audio analysis</text>
+  <text x="360" y="334" text-anchor="middle" class="small">waveform + resampling</text>
+  <text x="360" y="356" text-anchor="middle" class="small">log-Mel visualization</text>
+  <path d="M210 322 H265" class="edge"/>
+  <path d="M455 322 H505 V172 H550" class="edge"/>
+  <path d="M505 322 V467 H550" class="edge"/>
+  <text x="510" y="150" class="small">waveform</text>
+  <text x="510" y="488" class="small">log-Mel</text>
+  <rect x="550" y="112" width="235" height="120" class="box" fill="#dcfce7"/>
+  <text x="667" y="150" text-anchor="middle" class="label">Wav2Vec2</text>
+  <text x="667" y="178" text-anchor="middle" class="small">contextual audio encoder</text>
+  <text x="667" y="200" text-anchor="middle" class="small">character logits per frame</text>
+  <rect x="835" y="112" width="170" height="120" class="box" fill="#fef3c7"/>
+  <text x="920" y="153" text-anchor="middle" class="label">CTC decode</text>
+  <text x="920" y="180" text-anchor="middle" class="small">merge repeats,</text>
+  <text x="920" y="202" text-anchor="middle" class="small">remove blanks</text>
+  <path d="M785 172 H835" class="edge"/>
+  <rect x="550" y="407" width="235" height="120" class="box" fill="#ede9fe"/>
+  <text x="667" y="445" text-anchor="middle" class="label">Whisper</text>
+  <text x="667" y="473" text-anchor="middle" class="small">log-Mel encoder</text>
+  <text x="667" y="495" text-anchor="middle" class="small">autoregressive text decoder</text>
+  <rect x="835" y="407" width="170" height="120" class="box" fill="#fef3c7"/>
+  <text x="920" y="451" text-anchor="middle" class="label">Token decode</text>
+  <text x="920" y="480" text-anchor="middle" class="small">not CTC</text>
+  <text x="920" y="502" text-anchor="middle" class="small">sequence generation</text>
+  <path d="M785 467 H835" class="edge"/>
+  <rect x="1040" y="250" width="130" height="105" class="box" fill="#ffedd5"/>
+  <text x="1105" y="289" text-anchor="middle" class="label">Text</text>
+  <text x="1105" y="318" text-anchor="middle" class="small">transcript +</text>
+  <text x="1105" y="339" text-anchor="middle" class="small">WER evaluation</text>
+  <path d="M1005 172 H1020 V302 H1040" class="edge"/>
+  <path d="M1005 467 H1020 V302 H1040" class="edge"/>
+  <rect x="835" y="570" width="170" height="75" class="box" fill="#fce7f3"/>
+  <text x="920" y="601" text-anchor="middle" class="label">TTS</text>
+  <text x="920" y="625" text-anchor="middle" class="small">speech synthesizer</text>
+  <rect x="1040" y="570" width="130" height="75" class="box" fill="#dbeafe"/>
+  <text x="1105" y="601" text-anchor="middle" class="label">Speech</text>
+  <text x="1105" y="625" text-anchor="middle" class="small">WAV output</text>
+  <path d="M1105 355 V535 H920 V570" class="edge"/>
+  <path d="M1005 607 H1040" class="edge"/>
+  <text x="600" y="670" text-anchor="middle" class="small">WER must use a verified human reference transcript; the project reference is currently provisional.</text>
+</svg>
