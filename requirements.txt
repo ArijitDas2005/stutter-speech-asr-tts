@@ -11,3 +11,4 @@ sounddevice
 scipy
 faster-whisper
 gTTS
+reportlab
