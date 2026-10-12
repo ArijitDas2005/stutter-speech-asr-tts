@@ -16,15 +16,16 @@ It creates waveform and log-Mel visualizations, compares Wav2Vec2 and Whisper tr
 - `tts.ps1` — synthesizes the Whisper transcript using Windows speech synthesis
 - `stutter_speech_pipeline.ipynb` — notebook workflow for local use or Google Colab
 - `report/` — mini-report, architecture diagram, and three-minute demo script
-- `outputs/` — waveform and spectrogram figures plus WER results
+- `audio/new_stutter.mp3` — source audio used for the included example
+- `outputs/` — waveform and spectrogram figures, ASR transcripts, WER reference/results, and synthesized TTS audio
 
-Speech transcripts and generated TTS audio are excluded from this public repository because they are derived from a voice recording. The source recording is not included; provide your own audio file.
+**Audio privacy:** This public repository includes a voice recording, transcripts, and synthesized speech derived from it. Share or reuse these files only with the speaker's informed permission and any required rights. The recording is provided for this demonstration; do not assume it is cleared for unrelated reuse.
 
 ## Requirements
 
 - Python 3.10 or later (the notebook can also run in Google Colab)
 - Windows PowerShell for `tts.ps1`; the notebook TTS cell uses gTTS and needs internet access
-- The source audio file at `D:\new_stutter.mp3`, or update `AUDIO_PATH` in `main.py`, `asr.py`, and `whisper_asr.py`
+- The included source audio file at `audio/new_stutter.mp3`. Replace that file to use another recording.
 
 Install Python dependencies in a virtual environment:
 
@@ -60,7 +61,7 @@ Generate speech from the Whisper transcript on Windows:
 .\tts.ps1
 ```
 
-The generated transcripts, reference transcript, and TTS audio stay local and are ignored by Git.
+The generated transcripts, reference transcript, and TTS audio are stored under `outputs/` and included in this repository as example results.
 
 ## Notebook
 
@@ -74,4 +75,4 @@ Open `stutter_speech_pipeline.ipynb` in VS Code or Google Colab and run its cell
 
 ## Privacy and model limitations
 
-The audio file and speech-derived transcripts are not committed. Review permissions before sharing any speech recording or transcript. ASR output can omit, normalize, or alter disfluencies; WER from a single recording should not be generalized to broader model performance.
+This repository includes the source recording and speech-derived outputs; review the speaker's permissions before redistributing or reusing them. ASR output can omit, normalize, or alter disfluencies; WER from a single recording should not be generalized to broader model performance.

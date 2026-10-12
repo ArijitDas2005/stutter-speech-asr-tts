@@ -9,10 +9,3 @@ __pycache__/
 .idea/
 .DS_Store
 Thumbs.db
-
-# Source recordings and speech-derived artifacts are intentionally not published
-audio/
-outputs/*transcription*.txt
-outputs/reference_transcript.txt
-outputs/tts_output.wav
-outputs/notebook_tts_output.mp3

@@ -44,11 +44,11 @@ The current reference contains 81 words. WER is calculated as:
 
 For the current provisional reference, Wav2Vec2 gives `(7 + 0 + 8) / 81 = 15 / 81 = 18.52%`; Whisper gives `(0 + 0 + 1) / 81 = 1 / 81 = 1.23%`. The saved result table is [wer_results.csv](../outputs/wer_results.csv).
 
-**Evaluation limitation:** these numbers are not reliable final accuracy measurements. The local reference transcript is not included in the public repository, has not been independently verified against the recording, and closely follows the Whisper output. This biases the comparison in Whisper's favor. A human should listen to the original and correct a verbatim reference transcript, including the intended treatment of repetitions and disfluencies, before the WER is submitted as a valid model comparison.
+**Evaluation limitation:** these numbers are not reliable final accuracy measurements. The included reference transcript has not been independently verified against the recording and closely follows the Whisper output. This biases the comparison in Whisper's favor. A human should listen to the original and correct a verbatim reference transcript, including the intended treatment of repetitions and disfluencies, before the WER is submitted as a valid model comparison.
 
 #### Text-to-speech and conclusion
 
-The Whisper transcript is passed into Windows System.Speech and saved locally as `outputs/tts_output.wav`. This completes the return path from recognized text to synthesized speech. The generated voice is synthetic; it is not the original speaker and does not reproduce the original disfluencies. Speech-derived transcripts and TTS audio are deliberately excluded from the public repository.
+The Whisper transcript is passed into Windows System.Speech and saved as `outputs/tts_output.wav`. This completes the return path from recognized text to synthesized speech. The generated voice is synthetic; it is not the original speaker and does not reproduce the original disfluencies. The recording and speech-derived outputs are included in the repository; redistribution requires appropriate speaker permission.
 
 The project now includes audio feature extraction and plots, two ASR implementations and outputs, a CTC decoding demonstration, a WER comparison script and table, a generated TTS audio file, an ASR/TTS architecture diagram, this two-section mini-report, a runnable Jupyter/Colab notebook, and a timed presentation script. Run instructions and timing cues are in [three_minute_demo.md](three_minute_demo.md).
 

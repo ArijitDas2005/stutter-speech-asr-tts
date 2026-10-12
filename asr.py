@@ -11,7 +11,8 @@ from transformers import (
 # CONFIGURATION
 # ============================================================
 
-AUDIO_PATH = r"D:\new_stutter.mp3"
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+AUDIO_PATH = os.path.join(PROJECT_DIR, "audio", "new_stutter.mp3")
 
 OUTPUT_DIR = "outputs"
 
