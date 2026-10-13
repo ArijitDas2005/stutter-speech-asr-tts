@@ -16,6 +16,8 @@ It creates waveform and log-Mel visualizations, compares Wav2Vec2 and Whisper tr
 - `tts.ps1` — synthesizes the Whisper transcript using Windows speech synthesis
 - `stutter_speech_pipeline.ipynb` — notebook workflow for local use or Google Colab
 - `report/` — mini-report, architecture diagram, and three-minute demo script
+- `report/project_presentation.pptx` — 15-slide project presentation
+- `report/full_project_report.pdf` — detailed 15-page project report
 - `audio/new_stutter.mp3` — source audio used for the included example
 - `outputs/` — waveform and spectrogram figures, ASR transcripts, WER reference/results, and synthesized TTS audio
 
@@ -70,8 +72,17 @@ Open `stutter_speech_pipeline.ipynb` in VS Code or Google Colab and run its cell
 ## Demonstration and report
 
 - `report/mini_report.md` — project report and current evaluation caveats
+- `report/full_project_report.pdf` — detailed 15-page report
+- `report/project_presentation.pptx` — 15-slide widescreen presentation
+- `report/generate_deliverables.py` — regenerates both deliverables from the current figures, transcripts, audio metadata, and WER results
 - `report/asr_architecture.svg` — ASR and TTS architecture
 - `report/three_minute_demo.md` — timed presentation narration
+
+Regenerate the presentation and full report after updating outputs:
+
+```powershell
+python report\generate_deliverables.py
+```
 
 ## Privacy and model limitations
 

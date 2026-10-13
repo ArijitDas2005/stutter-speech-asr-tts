@@ -53,3 +53,5 @@ The Whisper transcript is passed into Windows System.Speech and saved as `output
 The project now includes audio feature extraction and plots, two ASR implementations and outputs, a CTC decoding demonstration, a WER comparison script and table, a generated TTS audio file, an ASR/TTS architecture diagram, this two-section mini-report, a runnable Jupyter/Colab notebook, and a timed presentation script. Run instructions and timing cues are in [three_minute_demo.md](three_minute_demo.md).
 
 The major remaining scientific limitation is the lack of a verified ground-truth transcript. Until that is corrected, report the WER values as provisional examples of the calculation rather than evidence that one recognizer is definitively more accurate.
+
+The expanded presentation and report are available as [project_presentation.pptx](project_presentation.pptx) and [full_project_report.pdf](full_project_report.pdf). Regenerate them with `python report/generate_deliverables.py`.

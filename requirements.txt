@@ -12,3 +12,4 @@ scipy
 faster-whisper
 gTTS
 reportlab
+python-pptx
