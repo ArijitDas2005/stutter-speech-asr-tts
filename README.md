@@ -14,7 +14,7 @@ It creates waveform and log-Mel visualizations, compares Wav2Vec2 and Whisper tr
 - `ctc_demo.py` — small CTC greedy-decoding example
 - `wer.py` — compares both ASR outputs with a reference transcript
 - `tts.ps1` — synthesizes the Whisper transcript using Windows speech synthesis
-- `stutter_speech_pipeline.ipynb` — notebook workflow for local use or Google Colab
+- `stutter_speech_pipeline.ipynb` — complete, documented all-in-one project: setup, waveform/log-Mel analysis, Wav2Vec2/CTC, Whisper, WER, TTS, saved outputs, limitations, references, and a three-minute demo script. Designed for local Jupyter/VS Code and Google Colab.
 - `report/` — mini-report, architecture diagram, and three-minute demo script
 - `report/project_presentation.pptx` — 15-slide project presentation
 - `report/full_project_report.pdf` — detailed 15-page project report
@@ -65,9 +65,13 @@ Generate speech from the Whisper transcript on Windows:
 
 The generated transcripts, reference transcript, and TTS audio are stored under `outputs/` and included in this repository as example results.
 
-## Notebook
+## All-in-one notebook
 
-Open `stutter_speech_pipeline.ipynb` in VS Code or Google Colab and run its cells. In Colab, upload the source audio when prompted, enter a human-verified reference transcript in the WER cell, and note that its gTTS cell requires an internet connection.
+The complete runnable workflow and its documentation are consolidated in `stutter_speech_pipeline.ipynb`. Open it from the repository root in VS Code/Jupyter or upload it to Google Colab, install dependencies, and run the cells from top to bottom. In Colab, upload the source audio when prompted. The notebook saves the plots, ASR transcripts, WER comparison, architecture diagram, and synthesized audio under `outputs/`.
+
+For a meaningful WER result, independently verify the reference transcript against the recording, enter it in the notebook, and mark it as verified. Otherwise, results based on the included provisional reference are explicitly labeled provisional. The notebook's gTTS cell requires internet access; it also includes an optional Windows System.Speech WAV cell.
+
+The standalone scripts remain in the repository for command-line use; the notebook contains their functionality together in one portable document.
 
 ## Demonstration and report
 

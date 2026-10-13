@@ -13,3 +13,5 @@ faster-whisper
 gTTS
 reportlab
 python-pptx
+ipykernel
+ipython
