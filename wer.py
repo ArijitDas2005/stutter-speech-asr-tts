@@ -34,13 +34,16 @@ def normalize_transcript(text: str) -> str:
 
 
 def main() -> None:
-    reference = normalize_transcript(read_transcript(REFERENCE_PATH))
+    reference_text = read_transcript(REFERENCE_PATH)
+    if reference_text.startswith("UNVERIFIED:"):
+        raise ValueError("WER not calculated: replace outputs/reference_transcript.txt with a human-verified transcript for the current audio.")
+    reference = normalize_transcript(reference_text)
     rows = []
 
     print("=" * 78)
     print("WORD ERROR RATE (WER) MODEL COMPARISON")
     print("=" * 78)
-    print("\nReference transcript (must be checked against the audio):")
+    print("\nReference transcript: provisional Whisper copy; not human-verified.")
     print(reference)
 
     for model_name, transcript_path in HYPOTHESIS_PATHS.items():
@@ -56,6 +59,7 @@ def main() -> None:
                 "deletions": result.deletions,
                 "insertions": result.insertions,
                 "wer": error_rate,
+                "reference_status": "provisional_whisper_copy_unverified",
             }
         )
 
@@ -84,8 +88,8 @@ def main() -> None:
 
     print(f"\nDetailed results saved to: {results_path}")
     print(
-        "Note: WER is only as reliable as the reference transcript. "
-        "Verify it manually against the audio before reporting final accuracy."
+        "Scores use a provisional Whisper-derived reference; "
+        "they are not verified model-accuracy measurements."
     )
 
 

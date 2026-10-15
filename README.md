@@ -18,8 +18,8 @@ It creates waveform and log-Mel visualizations, compares Wav2Vec2 and Whisper tr
 - `report/` — mini-report, architecture diagram, and three-minute demo script
 - `report/project_presentation.pptx` — 15-slide project presentation
 - `report/full_project_report.pdf` — detailed 15-page project report
-- `audio/new_stutter.mp3` — source audio used for the included example
-- `outputs/` — waveform and spectrogram figures, ASR transcripts, WER reference/results, and synthesized TTS audio
+- `audio/stutter_current.mp3` — source audio used for the included example
+- `outputs/` — waveform and spectrogram figures, ASR transcripts, provisional WER comparison, and synthesized TTS audio
 
 **Audio privacy:** This public repository includes a voice recording, transcripts, and synthesized speech derived from it. Share or reuse these files only with the speaker's informed permission and any required rights. The recording is provided for this demonstration; do not assume it is cleared for unrelated reuse.
 
@@ -27,7 +27,7 @@ It creates waveform and log-Mel visualizations, compares Wav2Vec2 and Whisper tr
 
 - Python 3.10 or later (the notebook can also run in Google Colab)
 - Windows PowerShell for `tts.ps1`; the notebook TTS cell uses gTTS and needs internet access
-- The included source audio file at `audio/new_stutter.mp3`. Replace that file to use another recording.
+- The included source audio file at `audio/stutter_current.mp3`. Replace that file to use another recording.
 
 Install Python dependencies in a virtual environment:
 
@@ -63,7 +63,7 @@ Generate speech from the Whisper transcript on Windows:
 .\tts.ps1
 ```
 
-The generated transcripts, reference transcript, and TTS audio are stored under `outputs/` and included in this repository as example results.
+The refreshed ASR transcripts and plots are stored under `outputs/`. `wer_results.csv` currently compares the recognizers against a provisional Whisper-derived reference; regenerate WER after verifying the reference against the audio.
 
 ## All-in-one notebook
 

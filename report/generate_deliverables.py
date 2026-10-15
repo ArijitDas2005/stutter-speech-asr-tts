@@ -36,16 +36,6 @@ WHITE = "#FFFFFF"
 MUTED = "#657789"
 LIGHT_LINE = "#D9E4EA"
 
-REF = (
-    "THANK YOU FOR GIVING ME THIS OPPORTUNITY I WANT TO TALK ABOUT MY DAILY LIFE AND "
-    "THE CHALLENGES I FACE WHILE SPEAKING SOMETIMES I KNOW WHAT I WANT TO SAY BUT THE "
-    "WORDS GET STUCK AND I CAN'T CONTINUE EASILY IT'S FAR FRUSTRATING WHEN I TRY TO "
-    "EXPLAIN SOMETHING BUT I KEEP TRYING TO GET THE WORDS OUT I TAKE A DEEP BREATH "
-    "PAUSE FOR A MOMENT AND START AGAIN WITH POOR PRACTICE AND PATIENCE I HOPE TO "
-    "IMPROVE MY SPEAKING"
-)
-
-
 def read_transcript(name):
     path = OUT / name
     if not path.exists():
@@ -66,7 +56,7 @@ def load_metrics():
 def audio_stats():
     import soundfile as sf
 
-    source = sf.info(str(ROOT / "audio" / "new_stutter.mp3"))
+    source = sf.info(str(ROOT / "audio" / "stutter_current.mp3"))
     tts = sf.info(str(OUT / "tts_output.wav"))
     return {
         "source_duration": source.duration,
@@ -334,8 +324,8 @@ def make_pdf(stats, metrics, asr_text, whisper_text):
     y = pdf_para(
         c, margin, y,
         content_w,
-        "<b>Purpose.</b> This project walks through a speech technology pipeline using a short English recording "
-        "with reported speech disfluencies. It combines acoustic inspection, two pretrained ASR systems, a CTC "
+        f"<b>Purpose.</b> This project walks through a speech technology pipeline using the current English recording "
+        f"({stats['source_duration']:.1f} seconds) with reported speech disfluencies. It combines acoustic inspection, two pretrained ASR systems, a CTC "
         "decoding demonstration, word-error-rate calculation, and speech synthesis. It is an educational "
         "engineering demonstration, not a diagnostic evaluation.",
     ) - 8
@@ -371,12 +361,12 @@ def make_pdf(stats, metrics, asr_text, whisper_text):
     y -= 14
     rows = [
         ["Property", "Observed project value"],
-        ["File", "audio/new_stutter.mp3"],
+        ["File", "audio/stutter_current.mp3"],
         ["Duration", f"{stats['source_duration']:.2f} seconds"],
         ["Decoded sample rate", f"{stats['source_rate']:,} Hz"],
         ["Analysis channels", "Mono for visual analysis and ASR"],
         ["ASR rate", "16,000 Hz for Wav2Vec2; Whisper decodes the file directly"],
-        ["Primary topic", "Speaker describes daily life and difficulty speaking"],
+        ["Primary topic", "Speaker describes a job interview and difficulty speaking by phone"],
     ]
     y = pdf_table(c, margin, y, [48 * mm, content_w - 48 * mm], rows) - 15
     y = pdf_para(
@@ -582,7 +572,7 @@ def make_pdf(stats, metrics, asr_text, whisper_text):
     y -= 12
     rows = [
         ["Step", "Operation"],
-        ["1. Reference", "Load the local human/reference transcript file."],
+        ["1. Reference", "Load outputs/reference_transcript.txt (currently copied from Whisper)."],
         ["2. Hypotheses", "Read Wav2Vec2 and Whisper transcript output files."],
         ["3. Normalize", "Lowercase and remove punctuation consistently."],
         ["4. Align", "JiWER aligns token sequences and counts edit operations."],
@@ -620,14 +610,17 @@ def make_pdf(stats, metrics, asr_text, whisper_text):
     y = pdf_bar_chart(c, margin, y, content_w, metrics) - 3
     y = pdf_para(
         c, margin, y, content_w,
-        "On the current transcript pair, Wav2Vec2 yields 7 substitutions and 8 insertions (15 edits / 81 words). "
-        "Whisper yields 1 insertion (1 edit / 81 words). This is a descriptive result for this example only.",
+        f"On this provisional {metrics[0]['reference_words']}-word Whisper-derived reference, Wav2Vec2 differs by "
+        f"{metrics[0]['substitutions']} substitutions, {metrics[0]['deletions']} deletions, and "
+        f"{metrics[0]['insertions']} insertions ({float(metrics[0]['wer']):.2%} WER). Whisper scores "
+        f"{float(metrics[1]['wer']):.2%} because its transcript is the reference. These are agreement scores, "
+        "not verified accuracy measurements.",
     ) - 9
     pdf_card(
         c, margin, y, content_w, 66, "Critical caveat",
-        "The reference closely follows the Whisper output and has not been independently verified. That creates "
-        "substantial evaluation bias. The 1.23% Whisper WER is not a fair benchmark and must not be interpreted "
-        "as proof of accuracy or general superiority.",
+        "The reference is copied directly from Whisper and has not been independently verified. Whisper therefore "
+        "scores zero by construction. Wav2Vec2's score measures disagreement with Whisper, not its true error rate. "
+        "Do not interpret these figures as model accuracy.",
         fill="#FFF4D6",
     )
     c.showPage()
@@ -648,7 +641,7 @@ def make_pdf(stats, metrics, asr_text, whisper_text):
         c, margin, y, content_w,
         "The output texts differ in recognition choices and in how fluency and punctuation are rendered. Such "
         "differences can reflect model design, training data, decoding, and normalization. The current WER "
-        "calculation compares each output to a provisional text resembling Whisper; it does not establish which "
+        "calculation compares each output to the Whisper transcript itself; it does not establish which "
         "words were actually spoken. A defensible analysis requires an independently prepared reference and "
         "manual adjudication of ambiguous segments.",
     ) - 9
@@ -744,8 +737,8 @@ def make_pdf(stats, metrics, asr_text, whisper_text):
     pdf_section(c, margin, y, "Limitations")
     y -= 13
     limitations = [
-        "Single short recording; results cannot be generalized to other speakers or conditions.",
-        "Reference transcript has not been independently verified and is biased toward Whisper.",
+        f"Single {stats['source_duration']:.1f}-second recording; results cannot be generalized to other speakers or conditions.",
+        "Reference transcript is copied from Whisper and has not been independently verified.",
         "ASR may normalize or omit disfluencies; transcript conventions affect WER.",
         "Greedy CTC does not use a language-model beam search in this implementation.",
         "TTS output is synthetic and not a reconstruction of the original voice.",
@@ -931,7 +924,7 @@ def make_ppt(stats, metrics, asr_text, whisper_text):
     ppt_text(slide, 0.9, 1.55, 10.3, 1.35, "From Voice to Text\nand Back", 34, WHITE, True)
     ppt_text(slide, 0.95, 3.0, 8.7, 0.7, "ASR, CTC, WER and text-to-speech analysis\nof a speech sample with disfluencies", 18, "#D8E8F1")
     ppt_flow(slide, y=4.35)
-    ppt_text(slide, 0.95, 5.85, 8.7, 0.55, f"36.49-second English sample  |  Wav2Vec2 + Whisper  |  TTS", 12, WHITE)
+    ppt_text(slide, 0.95, 5.85, 8.7, 0.55, f"140.35-second English sample  |  Wav2Vec2 + Whisper  |  TTS", 12, WHITE)
     ppt_text(slide, 0.95, 6.72, 9.0, 0.25, "Educational demonstration - not a clinical assessment", 9, "#D8E8F1")
     ppt_text(slide, 12.0, 7.16, 0.8, 0.2, "01 / 15", 8, "#D8E8F1", align=PP_ALIGN.RIGHT)
 
@@ -946,11 +939,11 @@ def make_ppt(stats, metrics, asr_text, whisper_text):
     ]
     for i, (t, b, a) in enumerate(cards):
         ppt_card(s, 0.7 + i * 3.15, 3.55, 2.9, 1.8, t, b, a, 12)
-    ppt_text(s, 0.78, 5.8, 11.8, 0.75, "Key result: the current run reports 18.52% WER for Wav2Vec2 and 1.23% for Whisper - but the reference is provisional and biased toward Whisper.", 15, NAVY, True)
+    ppt_text(s, 0.78, 5.8, 11.8, 0.75, f"Provisional agreement vs. Whisper reference: Wav2Vec2 {float(metrics[0]['wer']):.2%}; Whisper {float(metrics[1]['wer']):.2%}. These are not accuracy scores.", 15, NAVY, True)
 
     # Slide 3
     s = ppt_new_slide(prs, "Input recording and experiment scope", "What was analyzed - and what the numbers represent", 3)
-    ppt_card(s, 0.7, 1.55, 3.7, 1.5, "Recording", f"audio/new_stutter.mp3\n{stats['source_duration']:.2f} seconds | {stats['source_rate']:,} Hz", BLUE, 13)
+    ppt_card(s, 0.7, 1.55, 3.7, 1.5, "Recording", f"audio/stutter_current.mp3\n{stats['source_duration']:.2f} seconds | {stats['source_rate']:,} Hz", BLUE, 13)
     ppt_card(s, 4.8, 1.55, 3.7, 1.5, "Processing", "Mono analysis\nWav2Vec2 resampled to 16 kHz", CYAN, 13)
     ppt_card(s, 8.9, 1.55, 3.7, 1.5, "Scope", "One English speech sample\nEducational pipeline demonstration", MINT, 13)
     ppt_text(s, 0.8, 3.65, 11.7, 0.55, "Research question", 16, BLUE, True)
@@ -1032,7 +1025,7 @@ def make_ppt(stats, metrics, asr_text, whisper_text):
     ppt_shape(s, MSO_SHAPE.ROUNDED_RECTANGLE, 0.9, 1.55, 11.55, 1.05, PALE_MINT, CYAN)
     ppt_text(s, 1.25, 1.77, 10.8, 0.6, "WER = (Substitutions + Deletions + Insertions) / Reference words", 23, NAVY, True, align=PP_ALIGN.CENTER)
     stages = [
-        ("Reference", "81 words"),
+        ("Reference", f"{metrics[0]['reference_words']} words"),
         ("Normalize", "case / punctuation"),
         ("Align", "JiWER operations"),
         ("Count", "S, D, I"),
@@ -1041,7 +1034,7 @@ def make_ppt(stats, metrics, asr_text, whisper_text):
         x = 0.95 + i * 3.1
         ppt_card(s, x, 3.25, 2.7, 1.3, a, b, [BLUE, CYAN, MINT, CORAL][i], 12)
     ppt_shape(s, MSO_SHAPE.ROUNDED_RECTANGLE, 0.9, 5.15, 11.55, 0.95, "#FFF4D6", "#D6A94D")
-    ppt_text(s, 1.1, 5.35, 11.1, 0.52, "WER is meaningful only if the reference is independently verified and transcription conventions are consistent.", 14, INK, True)
+    ppt_text(s, 1.1, 5.35, 11.1, 0.52, "Current reference is a Whisper copy and is unverified; treat the scores as agreement, not accuracy.", 14, INK, True)
 
     # Slide 11 results
     s = ppt_new_slide(prs, "8 | Results on the current reference", "One sample; current reference transcript is provisional", 11)
@@ -1052,11 +1045,11 @@ def make_ppt(stats, metrics, asr_text, whisper_text):
     ppt_table(s, rows, 0.8, 5.15, 11.7, 1.2, font_size=11)
 
     # Slide 12 caveat
-    s = ppt_new_slide(prs, "9 | Critical evaluation caveat", "The current comparison favors the model that shaped the reference", 12)
-    ppt_card(s, 0.8, 1.55, 5.7, 1.55, "Current reference", "81 words; not independently verified against the recording", GOLD, 14)
-    ppt_card(s, 6.8, 1.55, 5.7, 1.55, "Whisper hypothesis", "Closely follows the provisional reference text", CORAL, 14)
-    ppt_text(s, 0.95, 3.55, 11.4, 0.6, "Therefore, 1.23% is not a fair accuracy benchmark.", 24, CORAL, True, align=PP_ALIGN.CENTER)
-    ppt_text(s, 1.1, 4.38, 11.1, 1.2, "Listen to the source audio, prepare a verbatim transcript independently, define a consistent policy for repetitions and fillers, review uncertain spans, then rerun both WER calculations.", 18, NAVY, align=PP_ALIGN.CENTER)
+    s = ppt_new_slide(prs, "9 | Critical evaluation caveat", "Whisper transcript is used as the provisional reference", 12)
+    ppt_card(s, 0.8, 1.55, 5.7, 1.55, "Current reference", f"{metrics[0]['reference_words']} words; copied from Whisper, not independently verified", GOLD, 14)
+    ppt_card(s, 6.8, 1.55, 5.7, 1.55, "Whisper hypothesis", "Matches the reference by construction", CORAL, 14)
+    ppt_text(s, 0.95, 3.55, 11.4, 0.6, f"Whisper's {float(metrics[1]['wer']):.2%} is not a fair accuracy benchmark.", 24, CORAL, True, align=PP_ALIGN.CENTER)
+    ppt_text(s, 1.1, 4.38, 11.1, 1.2, f"Wav2Vec2's {float(metrics[0]['wer']):.2%} measures disagreement with Whisper, not verified error. Prepare a verbatim transcript independently, then recalculate both scores.", 18, NAVY, align=PP_ALIGN.CENTER)
     ppt_text(s, 1.0, 6.15, 11.4, 0.35, "These results describe one example only; do not infer general model superiority.", 12, MUTED, align=PP_ALIGN.CENTER)
 
     # Slide 13 TTS
@@ -1092,7 +1085,7 @@ def make_ppt(stats, metrics, asr_text, whisper_text):
 
     # Slide 15 conclusion
     s = ppt_new_slide(prs, "Takeaways and next steps", "A useful pipeline demonstration - with evaluation caveats made explicit", 15)
-    ppt_card(s, 0.8, 1.55, 3.7, 1.55, "What works", "Feature plots, two ASR paths, CTC explanation, WER, and TTS.", BLUE, 13)
+    ppt_card(s, 0.8, 1.55, 3.7, 1.55, "What works", "Feature plots, two ASR paths, CTC explanation, provisional comparison, and TTS.", BLUE, 13)
     ppt_card(s, 4.8, 1.55, 3.7, 1.55, "What needs validation", "Reference transcript and the resulting accuracy comparison.", CORAL, 13)
     ppt_card(s, 8.8, 1.55, 3.7, 1.55, "What comes next", "Independent transcript review and broader recordings.", MINT, 13)
     ppt_text(s, 1.05, 3.7, 11.2, 0.6, "Bottom line", 16, BLUE, True, align=PP_ALIGN.CENTER)

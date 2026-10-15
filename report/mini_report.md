@@ -9,7 +9,7 @@ The activity demonstrates an end-to-end speech technology pipeline on a short En
 
 #### Input and signal analysis
 
-The input is `D:\new_stutter.mp3`, a recording approximately 36.49 seconds long. Its decoded source rate is 44.1 kHz; the Wav2Vec2 pipeline resamples mono audio to 16 kHz. The waveform plots amplitude over time. The log-Mel spectrogram represents short-time spectral energy on a Mel-frequency scale, using 128 Mel bands, a 2048-sample FFT window, and a 512-sample hop. The plots show acoustic activity and pauses, but they do not independently identify or diagnose stuttering.
+The input is `audio/stutter_current.mp3`, a recording approximately 140.35 seconds long. Its decoded source rate is 48 kHz; the Wav2Vec2 pipeline resamples mono audio to 16 kHz. The waveform plots amplitude over time. The log-Mel spectrogram represents short-time spectral energy on a Mel-frequency scale, using 128 Mel bands, a 2048-sample FFT window, and a 512-sample hop. The plots show acoustic activity and pauses, but they do not independently identify or diagnose stuttering.
 
 <table>
 <tr>
@@ -33,25 +33,13 @@ The full pipeline diagram is [ASR and TTS architecture](asr_architecture.svg).
 
 #### ASR comparison and WER
 
-The current reference contains 81 words. WER is calculated as:
-
-**WER = (substitutions + deletions + insertions) / reference words**
-
-| Model | Main decoding approach | Hits | Substitutions | Deletions | Insertions | WER |
-|---|---|---:|---:|---:|---:|---:|
-| Wav2Vec2-base-960h | CTC greedy decoding | 74 | 7 | 0 | 8 | 18.52% |
-| Whisper base | Encoder-decoder token generation | 81 | 0 | 0 | 1 | 1.23% |
-
-For the current provisional reference, Wav2Vec2 gives `(7 + 0 + 8) / 81 = 15 / 81 = 18.52%`; Whisper gives `(0 + 0 + 1) / 81 = 1 / 81 = 1.23%`. The saved result table is [wer_results.csv](../outputs/wer_results.csv).
-
-**Evaluation limitation:** these numbers are not reliable final accuracy measurements. The included reference transcript has not been independently verified against the recording and closely follows the Whisper output. This biases the comparison in Whisper's favor. A human should listen to the original and correct a verbatim reference transcript, including the intended treatment of repetitions and disfluencies, before the WER is submitted as a valid model comparison.
-
+The previous reference transcript describes the replaced recording and cannot be used for this sample. WER has not been calculated for the current audio. Add a human-verified verbatim transcript to `outputs/reference_transcript.txt`, then run `wer.py`.
 #### Text-to-speech and conclusion
 
-The Whisper transcript is passed into Windows System.Speech and saved as `outputs/tts_output.wav`. This completes the return path from recognized text to synthesized speech. The generated voice is synthetic; it is not the original speaker and does not reproduce the original disfluencies. The recording and speech-derived outputs are included in the repository; redistribution requires appropriate speaker permission.
+The `tts.ps1` script passes the Whisper transcript into Windows System.Speech and saves `outputs/tts_output.wav`. Synthesis for this new recording is still pending. The generated voice is synthetic; it is not the original speaker and does not reproduce the original disfluencies. The recording and speech-derived outputs are included in the repository; redistribution requires appropriate speaker permission.
 
-The project now includes audio feature extraction and plots, two ASR implementations and outputs, a CTC decoding demonstration, a WER comparison script and table, a generated TTS audio file, an ASR/TTS architecture diagram, this two-section mini-report, a runnable Jupyter/Colab notebook, and a timed presentation script. Run instructions and timing cues are in [three_minute_demo.md](three_minute_demo.md).
+The project now includes audio feature extraction and plots, two ASR implementations and outputs, a CTC decoding demonstration, a WER comparison script and table, a TTS generation script (new audio has not yet been synthesized), an ASR/TTS architecture diagram, this two-section mini-report, a runnable Jupyter/Colab notebook, and a timed presentation script. Run instructions and timing cues are in [three_minute_demo.md](three_minute_demo.md).
 
-The major remaining scientific limitation is the lack of a verified ground-truth transcript. Until that is corrected, report the WER values as provisional examples of the calculation rather than evidence that one recognizer is definitively more accurate.
+The major remaining scientific limitation is the lack of a verified ground-truth transcript. WER remains unavailable until the reference is verified against the new recording.
 
-The expanded presentation and report are available as [project_presentation.pptx](project_presentation.pptx) and [full_project_report.pdf](full_project_report.pdf). Regenerate them with `python report/generate_deliverables.py`.
+The expanded presentation and report are available as [project_presentation.pptx](project_presentation.pptx) and [full_project_report.pdf](full_project_report.pdf). These expanded files still reflect the previous run and must be regenerated after the reference and TTS output are refreshed.

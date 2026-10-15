@@ -1,3 +1,3 @@
-model,reference_words,hits,substitutions,deletions,insertions,wer
-Wav2Vec2 CTC,81,74,7,0,8,0.18518518518518517
-Whisper,81,81,0,0,1,0.012345679012345678
+model,reference_words,hits,substitutions,deletions,insertions,wer,reference_status
+Wav2Vec2 CTC,115,85,24,6,15,0.391304347826087,provisional_whisper_copy_unverified
+Whisper,115,115,0,0,0,0.0,provisional_whisper_copy_unverified

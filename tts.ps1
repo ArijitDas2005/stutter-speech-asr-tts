@@ -17,7 +17,10 @@ Add-Type -AssemblyName System.Speech
 $synthesizer = New-Object System.Speech.Synthesis.SpeechSynthesizer
 try {
     $synthesizer.SetOutputToWaveFile($outputPath)
-    $synthesizer.Speak($text)
+    $synthesizer.SpeakAsync($text)
+    while ($synthesizer.State -ne [System.Speech.Synthesis.SynthesizerState]::Ready) {
+        Start-Sleep -Milliseconds 100
+    }
     $synthesizer.SetOutputToNull()
 }
 finally {

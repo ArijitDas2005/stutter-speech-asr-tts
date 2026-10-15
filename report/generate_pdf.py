@@ -264,7 +264,7 @@ def build_story(doc, styles):
         Paragraph(
             "This educational project demonstrates a complete speech technology pipeline using an English recording "
             "with speech disfluencies. It is a technical demonstration—not a clinical assessment or diagnostic tool. "
-            "The source recording is approximately <b>36.49 seconds</b> at <b>44.1 kHz</b>; ASR input is mono audio "
+            "The source recording is approximately <b>140.35 seconds</b> at <b>48 kHz</b>; ASR input is mono audio "
             "resampled to <b>16 kHz</b> for Wav2Vec2.",
             styles["body"],
         ),
@@ -432,7 +432,7 @@ def build_story(doc, styles):
     )
 
     details = [
-        ["Input", "36.49-second English MP3, 44.1 kHz source; mono ASR"],
+        ["Input", "140.35-second English MP3, 48 kHz source; mono ASR"],
         ["Wav2Vec2", "facebook/wav2vec2-base-960h; CTC greedy decode"],
         ["Whisper", "base; CPU int8; English; beam size 5"],
         ["Features", "128 Mel bands; FFT 2048; hop 512"],

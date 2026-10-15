@@ -9,7 +9,7 @@ import numpy as np
 # ============================================================
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-AUDIO_PATH = os.path.join(PROJECT_DIR, "audio", "new_stutter.mp3")
+AUDIO_PATH = os.path.join(PROJECT_DIR, "audio", "stutter_current.mp3")
 
 OUTPUT_DIR = "outputs"
 
